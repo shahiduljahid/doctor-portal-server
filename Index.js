@@ -56,33 +56,11 @@ app.post("/addappointment", async (req, res) => {
     if (result) {
       res.send(true);
     }
-    
+
   } catch (error) {
     res.json({ err: "unknown error" });
   }
 });
-// app.post("/addOrder", async (req, res) => {
-//   try {
-//     const newData = new Order(req.body);
-//     const result = await newData.save();
-//     if (result) {
-//       res.send(true);
-//     }
-//   } catch (error) {
-//     res.json({ err: "unknown error" });
-//   }
-// });
-
-// app.delete("/deleteBook/:id", async (req, res) => {
-//   try {
-//     const data = await Product.findByIdAndDelete({
-//       _id: req.params.id,
-//     });
-//     res.send(data);
-//   } catch {
-//     res.send("Wrong parameter detected");
-//   }
-// });
 
 app.use("/", (req, res) => {
   res.json({ mess: "iam ALive" });
