@@ -56,6 +56,7 @@ app.post("/addappointment", async (req, res) => {
     if (result) {
       res.send(true);
     }
+    
   } catch (error) {
     res.json({ err: "unknown error" });
   }
