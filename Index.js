@@ -1,65 +1,91 @@
+// external imports
+const express = require("express");
+const mongoose = require("mongoose");
+const cors = require("cors");
+const bodyParser = require("body-parser");
+require("dotenv").config();
 
-const express = require('express')
-const bodyParser = require('body-parser')
-const cors = require('cors')
-const app = express()
-const MongoClient = require('mongodb').MongoClient;
-const port = 4000
+//internal Import
+const Appointment = require("./models/Appointment");
 
+const app = express();
+// database connection
+const uri = process.env.DB_URI;
+mongoose.set("strictQuery", false);
+mongoose
+  .connect(uri, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(() => console.log("database connection successful!"))
+  .catch((err) => console.log(err));
 
-const uri = `mongodb+srv://doctor:s01955298739@cluster0.z2baq.mongodb.net/Doctors-portal?retryWrites=true&w=majority`;
+const port = process.env.PORT || 5050;
 
-require('dotenv').config()
-
-app.use(bodyParser.json());
 app.use(cors());
 
-
-
-app.get('/', (req, res) => {
-  res.send('Hello World!')
-})
-
-
-
-
-const client = new MongoClient(uri, { useUnifiedTopology: true}, { useNewUrlParser: true }, { connectTimeoutMS: 30000 }, { keepAlive: 1});
-client.connect(err => {
-    console.log('database connected')
-  const appointmentCollection = client.db("Doctors-portal").collection("appointments");
-
-
-  app.post('/addappointment',(req,res) => {
-      const appointment = req.body;
-      console.log(appointment)
-      appointmentCollection.insertOne(appointment)
-      .then(result=>{
-          res.send(result.insertedCount>0)
-      })
-      .catch(err => {console.log(err)})
-  })
-  app.post('/appointments',(req,res) => {
-    const date = req.body;
-    console.log(date.date)
-    appointmentCollection.find({date:date.date}).toArray((err,documents)=>{
-        res.send(documents)
-        console.log(documents)
-
-    })
-    
-   
-})
-app.get('/totalAppointments',(req,res)=>{
-
-    appointmentCollection.find({}).toArray((err,documents)=>{
-        res.send(documents)
-    })
-
-
-
-})
-
+app.use(express.json());
+//routing setup
+app.get("/totalAppointments", async (req, res) => {
+  try {
+    const docs = await Appointment.find();
+    res.json(docs);
+  } catch {
+    res.json({ error: "unknown error" });
+  }
+});
+app.post("/appointments", async (req, res) => {
+  const body = req.body;
+  console.log(body)
+  try {
+    const docs = await Appointment.find({ date: body.data });
+    console.log(docs)
+    res.json(docs);
+  } catch {
+    res.json({ error: "unknown error" });
+  }
 });
 
+app.post("/addappointment", async (req, res) => {
+  console.log(req.body);
+  // res.send(true);
+  try {
+    const newData = new Appointment(req.body);
+    const result = await newData.save();
 
-app.listen(process.env.PORT || port)
+    if (result) {
+      res.send(true);
+    }
+  } catch (error) {
+    res.json({ err: "unknown error" });
+  }
+});
+// app.post("/addOrder", async (req, res) => {
+//   try {
+//     const newData = new Order(req.body);
+//     const result = await newData.save();
+//     if (result) {
+//       res.send(true);
+//     }
+//   } catch (error) {
+//     res.json({ err: "unknown error" });
+//   }
+// });
+
+// app.delete("/deleteBook/:id", async (req, res) => {
+//   try {
+//     const data = await Product.findByIdAndDelete({
+//       _id: req.params.id,
+//     });
+//     res.send(data);
+//   } catch {
+//     res.send("Wrong parameter detected");
+//   }
+// });
+
+app.use("/", (req, res) => {
+  res.json({ mess: "iam ALive" });
+});
+app.listen(port, () => {
+  console.log(`listening on port ${port}`);
+});
