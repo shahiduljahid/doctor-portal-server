@@ -13,14 +13,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/shahiduljahid/wedding-photographer-server.git"
+    "url": "git+https://github.com/shahiduljahid/doctor-portal-server.git"
   },
   "author": "sij",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/shahiduljahid/wedding-photographer-server/issues"
+    "url": "https://github.com/shahiduljahid/doctor-portal-server/issues"
   },
-  "homepage": "https://github.com/shahiduljahid/wedding-photographer-server#readme",
+  "homepage": "https://github.com/shahiduljahid/doctor-portal-server#readme",
   "dependencies": {
     "body-parser": "^1.20.1",
     "cors": "^2.8.5",
