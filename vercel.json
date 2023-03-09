@@ -4,7 +4,7 @@
     "name": "doc-server",
     "builds": [ {
          "src": "package.json",
-         "use": "@vercel/node"
+         "use": "node"
        }
       
    
