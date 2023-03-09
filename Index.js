@@ -20,7 +20,7 @@ mongoose
   .then(() => console.log("database connection successful!"))
   .catch((err) => console.log(err));
 
-const port = process.env.PORT || 5050;
+const port = process.env.PORT || 4040;
 
 app.use(cors());
 
