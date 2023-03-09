@@ -2,8 +2,12 @@
   {
     "version": 2,
     "name": "doc-server",
-    "builds": [
-       { "src": "index.js", "use": "node" }
+    "builds": [ {
+         "src": "package.json",
+         "use": "@vercel/node"
+       }
+      
+   
     ],
     "routes": [
        { "src": "/(.*)", "dest": "index.js" }
