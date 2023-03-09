@@ -2,13 +2,7 @@
   {
     "version": 2,
     "name": "doc-server",
-    "builds": [
-       { "src": "index.js", "use": "@vercel/node" },
-       {
-         "src": "package.json",
-         "use": "vercel-sapper"
-       }
-   
+    "builds": [{ "src": "index.js", "use": "@vercel/node" }
     ],
     "routes": [
        { "src": "/(.*)", "dest": "index.js" }
